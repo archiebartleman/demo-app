@@ -1,0 +1,27 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header :: copy"></head>
+
+<body>
+
+	<h1>Micro Services and Frontends Demo Application</h1>
+	<h3>Overview</h3>
+	<ul>
+		<li>Demo to highlight how to build a Micro Frontend packaged with a Micro Service.</li>
+		<li>Uses an in-memory H2 database with 2 sample employees loaded.</li>
+	</ul>
+
+	<h3>The Demo</h3>
+
+	<ul class="openlist">
+		<li>Fetch employee #10017: <a th:href="@{/employees/10017}">/employees/10017</a></li>
+
+		<li>ALL departments <a th:href="@{/departments/all}">/departments/all</a></li>
+	</ul>
+
+	<div th:replace="footer :: copy"></div>
+
+</body>
+</html>

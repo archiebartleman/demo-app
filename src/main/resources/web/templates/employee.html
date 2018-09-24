@@ -1,0 +1,32 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header :: copy"></head>
+
+<body>
+	<h1>Employee Details</h1>
+
+	<dl class="dl-horizontal">
+		<dt>Employee number:</dt>
+		<dd th:text="${employee.empNo}">number</dd>
+		<dt>First name:</dt>
+		<dd th:text="${employee.firstName}">number</dd>
+		<dt>Last name:</dt>
+		<dd th:text="${employee.lastName}">number</dd>
+		<dt>Date of birth:</dt>
+		<dd th:text="${#calendars.format(employee.birthDate,'dd MMMM yyyy')}">number</dd>
+		<dt>Gender:</dt>
+		<dd th:text="${employee.gender}">number</dd>
+	</dl>
+
+	<div style="height: 2cm">&nbsp;</div>
+
+	<div style="text-align: right">
+		Options: <a th:href="@{/}" class="btn"><span class="btn__text">Home</span></a> | <a
+			th:href="@{/departments/all}" class="btn btn--orange btn--big"><span class="btn__text">ALL departments</span></a>
+	</div>
+
+	<div th:replace="footer :: copy"></div>
+</body>
+</html>

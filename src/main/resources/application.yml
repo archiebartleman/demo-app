@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: employee-service  # Service registers under this name
+  freemarker:
+    enabled: false           # Ignore Eureka dashboard FreeMarker templates
+  thymeleaf:
+    cache: false       # Allow Thymeleaf templates to be reloaded at runtime
+    prefix: classpath:/web/templates/    # Trailing / mandatory
+
+  datasource:
+    platform: h2
+    url: jdbc:h2:mem:demodb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  server:
+    port: 8080
+    context-path: /
+
+  liquibase:
+    change-log: classpath:/liquibase/db.changelog-master.xml
+    enabled: true
+
+error:
+  path=/error
+
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1111/eureka/
+    registerWithEureka: false
+    fetchRegistry: false
+
+# HTTP Server
+server:
+  port: 2222   # HTTP (Tomcat) port
+  waitTimeInMsWhenSyncEmpty: 0

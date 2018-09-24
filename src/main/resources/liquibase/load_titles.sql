@@ -1,0 +1,2 @@
+INSERT INTO titles VALUES (10017,'Senior Staff','2000-08-03','9999-01-01'),(10017,'Staff','1993-08-03','2000-08-03');
+INSERT INTO titles VALUES (110022,'Manager','1985-01-01','1991-10-01'),(110022,'Senior Staff','1991-10-01','9999-01-01');

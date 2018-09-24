@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <preConditions>
+        <runningAs username="sa"/>
+    </preConditions>
+
+    <changeSet id="1" author="archie.bartleman">
+        <createTable tableName="employees">
+            <column name="emp_no" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="birth_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(14)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gender" type="VARCHAR(1)"/>
+            <column name="hire_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="employees_pk" tableName="employees" columnNames="emp_no"/>
+    </changeSet>
+    <changeSet id="2" author="archie.bartleman">
+        <createTable tableName="departments">
+            <column name="dept_no" type="CHAR(4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dept_name" type="VARCHAR(40)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="dept_name_uc"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="departments_pk" tableName="departments" columnNames="dept_no"/>
+    </changeSet>
+    <changeSet id="3" author="archie.bartleman">
+        <createTable tableName="dept_manager">
+            <column name="dept_no" type="CHAR(4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="emp_no" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="dept_manager_pk" tableName="dept_manager" columnNames="emp_no,dept_no"/>
+        <addForeignKeyConstraint baseTableName="dept_manager" baseColumnNames="emp_no" constraintName="dept_manager_fk1"
+                                 referencedTableName="employees"
+                                 referencedColumnNames="emp_no" onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="dept_manager" baseColumnNames="dept_no"
+                                 constraintName="dept_manager_fk2" referencedTableName="departments"
+                                 referencedColumnNames="dept_no" onDelete="CASCADE"/>
+        <createIndex tableName="dept_manager" indexName="dept_manager_idx_1">
+            <column name="dept_no"></column>
+        </createIndex>
+    </changeSet>
+    <changeSet id="4" author="archie.bartleman">
+        <createTable tableName="dept_emp">
+            <column name="emp_no" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dept_no" type="CHAR(4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="dept_emp_pk" tableName="dept_emp" columnNames="emp_no,dept_no"/>
+        <addForeignKeyConstraint baseTableName="dept_emp" baseColumnNames="emp_no" constraintName="dept_emp_fk1"
+                                 referencedTableName="employees"
+                                 referencedColumnNames="emp_no" onDelete="CASCADE"/>
+        <addForeignKeyConstraint baseTableName="dept_emp" baseColumnNames="dept_no" constraintName="dept_emp_fk2"
+                                 referencedTableName="departments"
+                                 referencedColumnNames="dept_no" onDelete="CASCADE"/>
+        <createIndex tableName="dept_emp" indexName="dept_emp_idx_1">
+            <column name="dept_no"></column>
+        </createIndex>
+    </changeSet>
+    <changeSet id="5" author="archie.bartleman">
+        <createTable tableName="titles">
+            <column name="emp_no" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to_date" type="DATE"/>
+        </createTable>
+        <addPrimaryKey constraintName="titles_pk" tableName="titles" columnNames="emp_no,title,from_date"/>
+        <addForeignKeyConstraint baseTableName="titles" baseColumnNames="emp_no" constraintName="titles_fk1"
+                                 referencedTableName="employees"
+                                 referencedColumnNames="emp_no" onDelete="CASCADE"/>
+    </changeSet>
+    <changeSet id="6" author="archie.bartleman">
+        <createTable tableName="salaries">
+            <column name="emp_no" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="salary" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey constraintName="salaries_pk" tableName="salaries" columnNames="emp_no,from_date"/>
+        <addForeignKeyConstraint baseTableName="salaries" baseColumnNames="emp_no" constraintName="salaries_fk1"
+                                 referencedTableName="employees"
+                                 referencedColumnNames="emp_no" onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet author="archie.bartleman" id="7">
+        <sqlFile dbms="h2"
+                 encoding="utf8"
+                 endDelimiter="\nGO"
+                 path="load_departments.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
+    <changeSet author="archie.bartleman" id="8">
+        <sqlFile dbms="h2"
+                 encoding="utf8"
+                 endDelimiter="\nGO"
+                 path="load_employees.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
+    <changeSet author="archie.bartleman" id="9">
+        <sqlFile dbms="h2"
+                 encoding="utf8"
+                 endDelimiter="\nGO"
+                 path="load_dept_emp.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
+    <changeSet author="archie.bartleman" id="10">
+        <sqlFile dbms="h2"
+                 encoding="utf8"
+                 endDelimiter="\nGO"
+                 path="load_dept_manager.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
+    <changeSet author="archie.bartleman" id="11">
+        <sqlFile dbms="h2"
+                 encoding="utf8"
+                 endDelimiter="\nGO"
+                 path="load_salaries.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
+    <changeSet author="archie.bartleman" id="12">
+        <sqlFile dbms="h2"
+                 encoding="utf8"
+                 endDelimiter="\nGO"
+                 path="load_titles.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true" />
+    </changeSet>
+
+</databaseChangeLog>
