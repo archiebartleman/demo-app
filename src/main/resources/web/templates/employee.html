@@ -18,6 +18,25 @@
 		<dd th:text="${#calendars.format(employee.birthDate,'dd MMMM yyyy')}">number</dd>
 		<dt>Gender:</dt>
 		<dd th:text="${employee.gender}">number</dd>
+		<dt>Salary Details:</dt>
+        <dd>
+		<table border="1">
+			<tr>
+				<th>Salary</th>
+                <th>&nbsp;</th>
+				<th>From</th>
+                <th>&nbsp;</th>
+				<th>To</th>
+			</tr>
+			<tr th:each="salary : ${employee.salaries}">
+				<td th:text="${#numbers.formatCurrency(salary.salary)}">&nbsp;</td>
+                <td>&nbsp;</td>
+				<td th:text="${#calendars.format(salary.id.fromDate,'dd MMMM yyyy')}">&nbsp;</td>
+                <td>&nbsp;</td>
+				<td th:text="${#calendars.format(salary.toDate,'dd MMMM yyyy')}">&nbsp;</td>
+			</tr>
+		</table>
+        </dd>
 	</dl>
 
 	<div style="height: 2cm">&nbsp;</div>
