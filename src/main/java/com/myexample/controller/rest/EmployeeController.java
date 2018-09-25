@@ -18,7 +18,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @RequestMapping(value = "/employees/all", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/employees/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public List<Employee> findAll() {
         List<Employee> employees = employeeService.findAll();
